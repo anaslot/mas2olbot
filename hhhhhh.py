@@ -1,21 +1,26 @@
 from telethon import TelegramClient
 import asyncio
+import os
 
-# معلومات حسابك
-api_id = 23720496  # API ID الخاص بك
-api_hash = "4cefa25bb037a7bc9a7796286a0ce19b"  # API Hash الخاص بك
-group_link = "https://t.me/chbjhdbchsbdchbjkqbcQDCBSDVH"  # رابط المجموعة
+# معلومات الحساب
+api_id = int(os.getenv("API_ID", 23720496))  # API ID الخاص بك
+api_hash = os.getenv("API_HASH", "4cefa25bb037a7bc9a7796286a0ce19b")  # API Hash الخاص بك
+group_link = os.getenv("GROUP_LINK", "https://t.me/chbjhdbchsbdchbjkqbcQDCBSDVH")  # رابط المجموعة
 
 # إنشاء جلسة Telethon
 client = TelegramClient("session_name", api_id, api_hash)
 
 async def send_messages():
     await client.start()
+
+    # الحصول على كيان المجموعة من الرابط
+    group = await client.get_entity(group_link)
     
     while True:
-        await client.send_message(group_link, "تدريب")  # إرسال الرسالة
+        # إرسال الرسالة إلى المجموعة
+        await client.send_message(group, "تدريب")
         print("✅ تم إرسال الرسالة إلى المجموعة!")
-        await asyncio.sleep(620)  # 600 ثانية = 10 دقائق
+        await asyncio.sleep(620)  # 620 ثانية = 10 دقائق و20 ثانية
 
 # تشغيل السكربت
 with client:
